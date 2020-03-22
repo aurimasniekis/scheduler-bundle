@@ -1,0 +1,61 @@
+{
+  "name": "aurimasniekis/scheduler-bundle",
+  "description": "A simple Symfony Job Scheduling Bundle",
+  "keywords": [
+    "symfony",
+    "scheduler",
+    "cron",
+    "job",
+    "cronjob"
+  ],
+  "homepage": "https://github.com/aurimasniekis/scheduler-bundle",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Aurimas Niekis",
+      "email": "aurimas@niekis.lt",
+      "homepage": "https://aurimas.niekis.lt"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/aurimasniekis/scheduler-bundle",
+    "source": "https://github.com/aurimasniekis/scheduler-bundle"
+  },
+  "require": {
+    "php": "^7.4||^8.0",
+    "dragonmantank/cron-expression": "^2.3",
+    "psr/log": "^1.1",
+    "symfony/console": "~4.0||~5.0",
+    "symfony/framework-bundle": "~4.0||~5.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "AurimasNiekis\\SchedulerBundle\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AurimasNiekis\\SchedulerBundle\\Tests\\": "tests"
+    }
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2",
+    "phpunit/phpunit": "^9.0"
+  },
+  "scripts": {
+    "test": "phpunit",
+    "test-coverage": "phpunit --coverage-html build/html/",
+    "test-ci": "phpunit --coverage-text --coverage-clover=coverage.clover",
+    "cs-check": "php-cs-fixer fix --dry-run --diff --diff-format udiff",
+    "cs-fix": "php-cs-fixer fix"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  }
+}

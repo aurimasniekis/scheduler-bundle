@@ -1,0 +1,36 @@
+language: php
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+
+env:
+    matrix:
+        - PHP_CS_FIXER_IGNORE_ENV=true
+    global:
+        - secure: Cpdeojb2vdl3UlTTIehBmey99olGKf9a+s10nVj4VqVVH9eXWzLeSLs1qzHHR9tnnwRouC5awhYeWVmZHblQzn5a/ZWdFsRoxfORu/Z+R0MSkvv9FqdjIpludr5xzaMXJHq5pBicewfqcfBpWfiE3gGKwcRg4d0zw1hvoBoREIG11yl/2/RIozlMbo6MbIfrKdmD5fvHdzEJC3Hvs68nefGjLEbCucY5WAIKS8upnD05fYGJkG+Ak/A8ke/oLskxk2jWNpKQ/I2bOpslkUgU0VFiFEZUS/nFqLBnsU/hfh67hCcga4xWwSwlEl011L4yutEg3rrYdbs8peAxk+8o44ywXbzr32dXkT5CvbDlV96imdwEW4Ca3Y4/GW7wNVV6ENLwNaJB7PSAvKL1Rtuz8GNzLdZ0FJWQNEL0FSXAaMh1ptHJbpilQb5G0DKIb2sE9ht0AR0RNDxTna3wkWMo55XcsCyFh3ZkuynEBp9ysuHs4OiiDb7eewX34OFIGMt52UXyqZT5we4DLweIodalOPrHGrrMHKsqsEraMo+x6pIAnuPhCgJ4yAOGppnLCdpqY0yOxGi/dJs8MWc0x1bMAN7ISDe7sIZe82Brm9VTQd2hY+AkczhpQHdUbq2tgWRrOjROCLeQ7gSrmBI89C/53XFRplZ00v63dbsyzTYOKmc=
+
+php:
+    - 7.4
+
+# This triggers builds to run on the new TravisCI infrastructure.
+# See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
+sudo: false
+
+before_script:
+    - wget https://github.com/infection/infection/releases/download/0.15.0/infection.phar
+    - wget https://github.com/infection/infection/releases/download/0.15.0/infection.phar.asc
+    - gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 493B4AA0
+    - gpg --with-fingerprint --verify infection.phar.asc infection.phar
+    - chmod +x infection.phar
+
+before_install:
+    - travis_retry composer self-update --no-interaction
+
+install:
+    - travis_retry composer update --no-interaction --prefer-dist
+
+script:
+    - composer cs-check
+    - composer test-ci
+    - ./infection.phar --min-msi=48 --threads=4 --only-covered
